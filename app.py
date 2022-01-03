@@ -10,8 +10,14 @@ api = Api(app)
 
 class AllegroRecruitingTask(Resource):
 
-    @api.route('/list_repos/<username>')
-    def get(self, username):
+    @api.route('/list_repos/<string:username>')
+    def get(self, username: str):
+        """
+        Returns a list of repos for a given user
+
+        :param username: The username for which get the list of repos
+        :return: A list of repos with languages
+        """
         to_return = []
 
         repos_list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
@@ -22,6 +28,10 @@ class AllegroRecruitingTask(Resource):
             to_return.append((name, list(json.loads(r.text))))
 
         return to_return
+
+    @api.route('/percentage/<string:username>')
+    def get(self, username: str):
+        return username
 
 
 if __name__ == '__main__':
