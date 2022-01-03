@@ -31,7 +31,21 @@ class AllegroRecruitingTask(Resource):
 
     @api.route('/percentage/<string:username>')
     def get(self, username: str):
-        return username
+        repos_list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
+
+        sum_ = 0
+        languages = {}
+
+        for repo in repos_list:
+            r = requests.get(f'https://api.github.com/repos/{username}/{repo["name"]}/languages')
+            for language, byte_value in json.loads(r.text).items():
+
+                sum_ += byte_value
+
+                if language in languages:
+                    languages[language] += byte_value
+
+        return {language: (byte_value / sum_) * 100 for language, byte_value in languages.items()}
 
 
 if __name__ == '__main__':
