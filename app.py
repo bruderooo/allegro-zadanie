@@ -8,9 +8,8 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class AllegroRecruitingTask(Resource):
-
-    @api.route('/list_repos/<string:username>')
+@api.route('/list_repos/<string:username>', methods=['GET'])
+class ListReposWithLanguages(Resource):
     def get(self, username: str):
         """
         Returns a list of repos for a given user
@@ -29,7 +28,9 @@ class AllegroRecruitingTask(Resource):
 
         return to_return
 
-    @api.route('/percentage/<string:username>')
+
+@api.route('/percentage/<string:username>', methods=['GET'])
+class PercentageOfLanguages(Resource):
     def get(self, username: str):
         """
         Return the percentage of languages used by a user in his repos
