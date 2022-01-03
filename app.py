@@ -31,6 +31,12 @@ class AllegroRecruitingTask(Resource):
 
     @api.route('/percentage/<string:username>')
     def get(self, username: str):
+        """
+        Return the percentage of languages used by a user in his repos
+
+        :param username: The username for which get the percentage of used languages
+        :return:
+        """
         repos_list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
 
         sum_ = 0
