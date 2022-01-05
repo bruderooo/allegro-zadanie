@@ -1,3 +1,4 @@
+import argparse
 import json
 
 import requests
@@ -14,14 +15,12 @@ namespace = api.namespace('', description='API - Allegro task')
 @namespace.route('/list_repos/<string:username>', methods=['GET'])
 class ListReposWithLanguages(Resource):
 
-    @namespace.doc(params={'username': 'Username for which you want to get list of repositories, with languages'})
+    @namespace.doc(
+        description="Zwraca listę repozytoriów dla danego użytkownika",
+        params={'username': 'Nazwa użytkownika, dla którego pobieramy listę repozytoriów wraz z językami'}
+    )
     def get(self, username: str):
-        """
-        Returns a list of repos for a given user
-
-        :param username: The username for which get the list of repos
-        :return: A list of repos with languages
-        """
+        """Zwraca listę repozytoriów dla danego użytkownika"""
         to_return: list = []
 
         repos_list: list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
@@ -37,15 +36,12 @@ class ListReposWithLanguages(Resource):
 @namespace.route('/percentage/<string:username>', methods=['GET'])
 class PercentageOfLanguages(Resource):
 
-    @namespace.doc(params={
-        'username': 'Username for which you want to get percentage of languages on all repositories'})
+    @namespace.doc(
+        description="Zwraca procentową ilość języków w repozytoriach danego użytkownika",
+        params={'username': 'Nazwa użytkownika, dla którego chcesz uzyskać procentową liczbę języków'}
+    )
     def get(self, username: str):
-        """
-        Return the percentage of languages used by a user in his repositories
-
-        :param username: The username for which get the percentage of used languages
-        :return:
-        """
+        """Zwraca procentową ilość języków w repozytoriach danego użytkownika"""
         repos_list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
 
         sum_all_code_bytes = 0
@@ -61,4 +57,11 @@ class PercentageOfLanguages(Resource):
 
 
 if __name__ == '__main__':
-    app.run()
+    parser = argparse.ArgumentParser(description='Uruchamia aplikację API stworzoną na zaliczenie zadania.')
+    parser.add_argument('--ip', dest='ip', default='127.0.0.1',
+                        help='Adres IP do uruchomienia serwera (domyślnie przyjmuje adres 127.0.0.1')
+    parser.add_argument('--port', dest='port', default='5000',
+                        help='Port na którym ma działać serwer (domyślnie przyjmuje port 5000)')
+    args = parser.parse_args()
+
+    app.run(host=args.ip, port=args.port)
