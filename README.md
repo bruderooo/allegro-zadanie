@@ -1,4 +1,13 @@
-# Instrukcja instalacji: #
+# Spis treści #
+
+1. [Instrukcja instalacji](#instrukcja-instalacji)
+2. [Instrukcja uruchomienia](#instrukcja-uruchomienia)
+3. [Korzystanie z aplikacji](#korzystanie-z-aplikacji)
+4. [Możliwe rozszerzenia do dodania](#moliwe-rozszerzenia-do-dodania)
+
+<a name="instrukcja-instalacji"></a>
+
+# Instrukcja instalacji # 
 
 Sugerowana wersja pythona to Python 3.9 (wersje pythona można ustawić podając ją jako parametry --python dla polecenia
 virtualenv).
@@ -19,9 +28,9 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-----
+<a name="instrukcja-uruchomienia"></a>
 
-# Instrukcja uruchomienia: #
+# Instrukcja uruchomienia #
 
 Po zainstalowaniu aplikacji, można ją uruchomić za pomocą polecenia:
 
@@ -53,9 +62,9 @@ python app.py --ip 127.0.0.1 --port 5000
 python app.py --help
 ```
 
-----
+<a name="korzystanie-z-aplikacji"></a>
 
-# Korzystanie z aplikacji: #
+# Korzystanie z aplikacji #
 
 Po uruchomieniu aplikacji możemy skorzystać z endpointów z użyciem curl, albo korzystając z dokumentacji swaggera pod
 głównym adresem.
@@ -67,10 +76,10 @@ curl -X GET http://127.0.0.1:5000/list_repos/bruderooo
 curl -X GET http://127.0.0.1:5000/percentage/bruderooo
 ```
 
-----
+<a name="moliwe-rozszerzenia-do-dodania"></a>
 
-# Możliwe rozszerzenia do dodania: #
+# Możliwe rozszerzenia do dodania #
 
-* dodanie testów
-* rozszerzenie funkcjonalności (o np możliwość logowania, tak żeby można było wysłać więcej zapytań do API Githuba)
-* .
+* testy
+* rozszerzenie funkcjonalności (o np możliwość logowania do GitHuba, tak żeby można było wysłać więcej zapytań)
+* dodaiwanie nowych endpointów (np. endpoint do podawania gwiazdek)
