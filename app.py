@@ -16,11 +16,12 @@ namespace = api.namespace('', description='API - Allegro task')
 class ListReposWithLanguages(Resource):
 
     @namespace.doc(
-        description="Zwraca listę repozytoriów dla danego użytkownika",
+        description="Dla danego użytkownika zwraca słownik, gdzie kluczami są nazwy repozytoriów, "
+                    "a odpowiadające im wartości, to listy użytych języków",
         params={'username': 'Nazwa użytkownika, dla którego pobieramy listę repozytoriów wraz z językami'}
     )
     def get(self, username: str):
-        """Zwraca listę repozytoriów dla danego użytkownika"""
+        """Zwraca słownik repozytoriów dla danego użytkownika wraz z językami"""
         to_return: dict = {}
 
         repos_list: list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
@@ -36,15 +37,15 @@ class ListReposWithLanguages(Resource):
 class PercentageOfLanguages(Resource):
 
     @namespace.doc(
-        description="Zwraca procentową ilość języków w repozytoriach danego użytkownika",
+        description="Zwraca procentowe użycie języków w repozytoriach danego użytkownika",
         params={'username': 'Nazwa użytkownika, dla którego chcesz uzyskać procentową liczbę języków'}
     )
     def get(self, username: str):
-        """Zwraca procentową ilość języków w repozytoriach danego użytkownika"""
-        repos_list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
+        """Zwraca procentowe użycie języków w repozytoriach danego użytkownika"""
+        repos_list: list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
 
-        sum_all_code_bytes = 0
-        languages = {}
+        sum_all_code_bytes: int = 0
+        languages: dict = {}
 
         for repo in repos_list:
             r = requests.get(repo['languages_url'])

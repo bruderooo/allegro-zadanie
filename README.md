@@ -79,6 +79,11 @@ curl -X GET http://127.0.0.1:5000/percentage/bruderooo
 
 <a name="moliwe-rozszerzenia-do-dodania"></a>
 
+# Ograniczenia #
+
+Korzystam z GitHub API, które to posiada ograniczoną liczbę zapytań na godzinę. Więcej informacji na temat ograniczeń
+znajduję się w [dokumentacji API](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting).
+
 # Możliwe rozszerzenia do dodania #
 
 * testy
