@@ -21,14 +21,13 @@ class ListReposWithLanguages(Resource):
     )
     def get(self, username: str):
         """Zwraca listę repozytoriów dla danego użytkownika"""
-        to_return: list = []
+        to_return: dict = {}
 
         repos_list: list = json.loads(requests.get(f'https://api.github.com/users/{username}/repos').text)
 
         for repo in repos_list:
-            name: str = repo['name']
-            r = requests.get(f'https://api.github.com/repos/{username}/{name}/languages')
-            to_return.append((name, list(json.loads(r.text))))
+            r = requests.get(repo['languages_url'])
+            to_return[repo['name']] = list(json.loads(r.text))
 
         return to_return
 
@@ -48,7 +47,7 @@ class PercentageOfLanguages(Resource):
         languages = {}
 
         for repo in repos_list:
-            r = requests.get(f'https://api.github.com/repos/{username}/{repo["name"]}/languages')
+            r = requests.get(repo['languages_url'])
             for language, byte_value in json.loads(r.text).items():
                 sum_all_code_bytes += byte_value
                 languages[language] = languages.get(language, 0) + byte_value
@@ -59,7 +58,7 @@ class PercentageOfLanguages(Resource):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Uruchamia aplikację API stworzoną na zaliczenie zadania.')
     parser.add_argument('--ip', dest='ip', default='127.0.0.1',
-                        help='Adres IP do uruchomienia serwera (domyślnie przyjmuje adres 127.0.0.1')
+                        help='Adres IP do uruchomienia serwera (domyślnie przyjmuje adres 127.0.0.1)')
     parser.add_argument('--port', dest='port', default='5000',
                         help='Port na którym ma działać serwer (domyślnie przyjmuje port 5000)')
     args = parser.parse_args()

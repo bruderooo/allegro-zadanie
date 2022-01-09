@@ -10,7 +10,8 @@
 # Instrukcja instalacji # 
 
 Sugerowana wersja pythona to Python 3.9 (wersje pythona można ustawić podając ją jako parametry --python dla polecenia
-virtualenv).
+virtualenv). Po wejściu do katalogu projektu należy wykonać poniższe polecenia (w celu stworzenia wirtualnego środowiska
+i instalacji niezbędnych bibliotek)
 
 Instalacja z użyciem pip w systemie Linux/MacOS:
 
@@ -82,4 +83,6 @@ curl -X GET http://127.0.0.1:5000/percentage/bruderooo
 
 * testy
 * rozszerzenie funkcjonalności (o np możliwość logowania do GitHuba, tak żeby można było wysłać więcej zapytań)
-* dodaiwanie nowych endpointów (np. endpoint do podawania gwiazdek)
+* dodawanie nowych endpointów (np. endpoint do podawania gwiazdek repozytorium)
+* obsługa wyjątków
+* dodanie asynchroniczności
