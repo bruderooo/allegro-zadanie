@@ -4,6 +4,18 @@ from flask_restx import Resource, Namespace
 percentage_of_languages_ns = Namespace('percentage', description='API - Allegro task')
 
 
+def compute_percentage_of_languages(languages_for_repos):
+    languages = {}
+    sum_all_code_bytes = 0
+
+    for repos in languages_for_repos:
+        for language, byte_value in repos.items():
+            sum_all_code_bytes += byte_value
+            languages[language] = languages.get(language, 0) + byte_value
+
+    return {language: (byte_value / sum_all_code_bytes) * 100 for language, byte_value in languages.items()}
+
+
 @percentage_of_languages_ns.route('/<string:username>', methods=['GET'])
 class PercentageOfLanguages(Resource):
 
@@ -14,14 +26,6 @@ class PercentageOfLanguages(Resource):
     def get(self, username: str):
         """Zwraca procentowe użycie języków w repozytoriach danego użytkownika"""
         repos_list: list = requests.get(f'https://api.github.com/users/{username}/repos').json()
+        languages_for_repos = [requests.get(repo['languages_url']).json() for repo in repos_list]
 
-        sum_all_code_bytes: int = 0
-        languages: dict = {}
-
-        for repo in repos_list:
-            r = requests.get(repo['languages_url'])
-            for language, byte_value in r.json().items():
-                sum_all_code_bytes += byte_value
-                languages[language] = languages.get(language, 0) + byte_value
-
-        return {language: (byte_value / sum_all_code_bytes) * 100 for language, byte_value in languages.items()}
+        return compute_percentage_of_languages(languages_for_repos)
